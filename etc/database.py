@@ -13,24 +13,45 @@ from colorama import Fore, Style
 
 
 class DatabaseManager:
-    def __init__(
-        self,
-        user: str,
-        host: str,
-        dbname: str,
-        port: str = "5432"
-    ):
-        self.user = user
-        self.host = host.strip()
-        self.dbname = dbname
-        self.port = port
-        self.password = None
+    def __init__(self):
+        self.user=None
+        self.host=None
+        self.dbname=None
+        self.port=5432
+        self.password=None
     
+    def __check_db_connection(self):
+        try:
+            conn = psycopg2.connect(
+                user=self.user,
+                dbname=self.dbname,
+                host=self.host,
+                password=self.password,
+                port=self.port
+            )
+            print(Fore.GREEN + "Connection Success" + Style.RESET_ALL)
+            conn.close()
+        
+        except Exception as e:
+            print(Fore.RED + f"Connection Failed: {e}\n" + Style.RESET_ALL)
+            raise Exception(f"Error : {e}") from e
+            
     # take password for database password
     def _get_password(self):
         if self.password is None:
             self.password = pwinput.pwinput(prompt="Enter PostgreSQL password: ", mask="*") 
     
+    def get_db_details(self):
+        self.user = input("Enter Postgres user: ") 
+        self.host = pwinput.pwinput(prompt="Enter Postgres host (hidden): ", mask="*") 
+        self.dbname = input("Enter Postgres database name: ") 
+        port = input("Enter Postgres port [default=5432]: ") 
+        if port:
+            self.port=port
+        self._get_password()
+       
+        self.__check_db_connection()
+        
     # Create a database
     def create_database(self):
         self._get_password()
@@ -56,6 +77,7 @@ class DatabaseManager:
 
             cursor.close()
             cursor.close()
+            print("Connection Closed!")
 
         except psycopg2.OperationalError as e:
             print(Fore.RED + f"Unable to connect to PostgreSQL: {str(e)}")
@@ -88,6 +110,12 @@ class DatabaseManager:
         except FileNotFoundError as e:
             raise FileExistsError(Fore.RED + f"File Not Found {str(e)}" + Style.RESET_ALL) from e
 
+    def return_uri(self):
+        self._get_password()
+        return f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.dbname}"
+    
+    # TODO: Combine create_dataset() and insert_dataset()
+    
 if __name__ == "__main__":
     db_inst = DatabaseManager(user="saranshpandya", host="host.docker.internal", dbname="test_from_python")
     db_inst.create_database() 

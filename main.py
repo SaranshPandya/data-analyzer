@@ -1,3 +1,4 @@
+# FEAT: Automated setup for local postgreSQL setup, if user wants.
 from etc.database import DatabaseManager
 from agents.database_agent import Agent
 from colorama import Fore, Style

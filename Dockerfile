@@ -1,25 +1,37 @@
-# ---- Base Python Image ----
+# Use slim Python base image
 FROM python:3.11-slim
 
-# ---- System Dependencies ----
-RUN apt-get update && apt-get install -y curl build-essential && rm -rf /var/lib/apt/lists/*
+# Avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# ---- Install Poetry ----
+# Set Poetry version
 ENV POETRY_VERSION=1.7.1
-RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Install system dependencies & Poetry
+RUN apt-get update && apt-get install -y curl build-essential \
+    && curl -sSL https://install.python-poetry.org | python3 - \
+    && rm -rf /var/lib/apt/lists/*
 
 # Add Poetry to PATH
 ENV PATH="/root/.local/bin:$PATH"
 
-# ---- Set Workdir ----
+# Set working directory
 WORKDIR /app
 
-# ---- Copy project files ----
+# Copy poetry files first to leverage Docker cache
 COPY pyproject.toml poetry.lock* ./
-RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
 
-# ---- Copy rest of the code ----
+# Configure poetry (no virtualenvs inside container)
+RUN poetry config virtualenvs.create false \
+ && poetry install --no-interaction --no-ansi
+
+# Copy all source code
 COPY . .
 
-# ---- Default command (change as needed) ----
-#CMD ["uvicorn", "your_module.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Optional: Set environment variables from .env if needed
+# ENV VAR=value
+
+# Set default command (update this if you use something like uvicorn)
+CMD ["python", "main.py"]
+
+

@@ -31,16 +31,18 @@ class DatabaseManager:
             )
             print(Fore.GREEN + "Connection Success" + Style.RESET_ALL)
             conn.close()
-        
+ 
         except Exception as e:
             print(Fore.RED + f"Connection Failed: {e}\n" + Style.RESET_ALL)
             raise Exception(f"Error : {e}") from e
             
     # take password for database password
+    # FEAT: Store password with encryption.
     def _get_password(self):
         if self.password is None:
             self.password = pwinput.pwinput(prompt="Enter PostgreSQL password: ", mask="*") 
     
+    # FEAT: Store the details in user session, so user can login and get started with database without re-entering the database details.. 
     def get_db_details(self):
         self.user = input("Enter Postgres user: ") 
         self.host = pwinput.pwinput(prompt="Enter Postgres host (hidden): ", mask="*") 
@@ -67,10 +69,10 @@ class DatabaseManager:
             cursor=conn.cursor()
             cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = %s", (self.dbname,))
             exists = cursor.fetchone()
-            
+
             if exists:
                 print(Fore.LIGHTGREEN_EX + f"Database {self.dbname} already exists" + Style.RESET_ALL)
-             
+ 
             else:
                 cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(self.dbname)))
                 print(Fore.LIGHTGREEN_EX + f"Database {self.dbname} created successfully" + Style.RESET_ALL)
@@ -90,6 +92,7 @@ class DatabaseManager:
         
             
     # Currently only supports postgres.
+    # FIX: Time consuming for larger data, make inserting dataset to database faster. 
     def insert_csv(
         self,
         file: str,
@@ -114,7 +117,7 @@ class DatabaseManager:
         self._get_password()
         return f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.dbname}"
     
-    # TODO: Combine create_dataset() and insert_dataset()
+    # FEAT: Combine create_dataset() and insert_dataset(). The combined function will be exposed to the user to do both with one function.
     
 if __name__ == "__main__":
     db_inst = DatabaseManager(user="saranshpandya", host="host.docker.internal", dbname="test_from_python")

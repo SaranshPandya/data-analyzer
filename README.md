@@ -65,4 +65,6 @@ docker build -t data-analyzer:latest .
 docker run -it data-analyzer:latest
 ```
 
-> ***Note**: Adding support for more models, including local ones, is definitely on the roadmap.
+> **Note**: Adding support for more models, including local ones, is definitely on the roadmap.
+
+> **Note**: Enhancing agent performance with LangGraph is currently in active development.

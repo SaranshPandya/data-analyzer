@@ -1,19 +1,23 @@
 # FEAT: Automated setup for local postgreSQL setup, if user wants.
-from etc.database import DatabaseManager
+from tools.database import DatabaseManager
 from agents.database_agent import Agent
 from colorama import Fore, Style
+import warnings
 
 print(Fore.LIGHTGREEN_EX + "Starting Service..." + Style.RESET_ALL)
 
-db_instance = DatabaseManager()
+warning = """IMPORTANT:
+As of now, you must manually enter database details and Gemini API keys every time.
+Persistence support is coming soon!"""
 
-db_instance.get_db_details()
+print(Fore.LIGHTRED_EX + f"\n{warning}\n" + Style.RESET_ALL)
+
+db_instance = DatabaseManager()
 
 uri = db_instance.return_uri()
 
 agent_insstance = Agent(uri=uri,
                         llm_name="gemini-2.0-flash",
-                        api_key_env="GEMINI_API_KEY",
                         temperature=0.6,
                         verbose=True)
 

@@ -32,6 +32,6 @@ COPY . .
 # ENV VAR=value
 
 # Set default command (update this if you use something like uvicorn)
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]
 
 

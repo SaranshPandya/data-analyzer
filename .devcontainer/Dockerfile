@@ -24,7 +24,27 @@ RUN DEBIAN_FRONTEND=noninteractive \
         libxmlsec1-dev \
         libffi-dev \
         liblzma-dev
+###################
+# Install Node.js (and npm)
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
+# Optional: install Mermaid CLI globally
+RUN npm install -g @mermaid-js/mermaid-cli
+# Install Chromium for puppeteer
+RUN apt-get update && \
+    apt-get install -y chromium
+
+# Install Node.js and Mermaid CLI
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g @mermaid-js/mermaid-cli
+
+# Point Puppeteer to the system Chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+###############
 # Python and poetry installation
 USER $USER
 ARG HOME="/home/$USER"

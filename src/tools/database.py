@@ -13,12 +13,18 @@ from colorama import Fore, Style
 
 
 class DatabaseManager:
-    def __init__(self):
-        self.user=None
-        self.host=None
-        self.dbname=None
-        self.port=5432
-        self.password=None
+    def __init__(self,
+                 user: str=None,
+                 host: str=None,
+                 dbname: str=None,
+                 port: int=5432,
+                 password: str=None):
+
+        self.user=user
+        self.host=host
+        self.dbname=dbname
+        self.port=port
+        self.password=password
     
     def __check_db_connection(self):
         try:
@@ -42,7 +48,7 @@ class DatabaseManager:
         if self.password is None:
             self.password = pwinput.pwinput(prompt="Enter PostgreSQL password: ", mask="*") 
     
-    # FEAT: Store the details in user session, so user can login and get started with database without re-entering the database details.. 
+    # FEAT: Store the details in user session, so user can login and get started with database without re-entering the database details.
     def get_db_details(self):
         self.user = input("Enter Postgres user: ") 
         self.host = pwinput.pwinput(prompt="Enter Postgres host (hidden): ", mask="*") 
@@ -56,7 +62,7 @@ class DatabaseManager:
         
     # Create a database
     def create_database(self):
-        self._get_password()
+        
         try:
             conn = psycopg2.connect(
                 user=self.user,
@@ -98,7 +104,6 @@ class DatabaseManager:
         file: str,
         table_name: str
     ):
-        self._get_password()
         try:
             df = pd.read_csv(file)
             print(f"Inserting {df.shape[1]} columns and {df.shape[0]} rows")
@@ -114,7 +119,9 @@ class DatabaseManager:
             raise FileExistsError(Fore.RED + f"File Not Found {str(e)}" + Style.RESET_ALL) from e
 
     def return_uri(self):
-        self._get_password()
+        if None in [self.user, self.port, self.password, self.dbname, self.host, self.password]:
+            self.get_db_details()
+        
         return f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.dbname}"
     
     # FEAT: Combine create_dataset() and insert_dataset(). The combined function will be exposed to the user to do both with one function.

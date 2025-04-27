@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Poetry & virtualenv
+.venv/
+poetry.lock
+poetry.toml
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# macOS files
+.DS_Store
+
+# Docker junk
+Dockerfile
+.dockerignore
+
+# Git
+.git/
+.gitignore

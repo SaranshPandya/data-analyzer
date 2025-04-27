@@ -5,3 +5,10 @@ misc/
 .env
 __pycache__/
 *.py[cod]
+test.py
+src/misc
+*.svg
+*.mmd
+*.iml
+*.xml
+poetry.lock

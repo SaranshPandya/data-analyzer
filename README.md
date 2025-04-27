@@ -9,7 +9,6 @@ This tool is ideal for developers, data analysts, and researchers who need to ex
 - Uses AI agents (powered by Google's Gemini model) to analyze and interpret data.
 - Interactive command-line interface for entering queries and receiving insights.
 - Built with Python 3.11, pandas, LangChain, and other modern libraries.
-- Available as a Docker image.
 
 ## Installation
 
@@ -55,20 +54,3 @@ This tool is ideal for developers, data analysts, and researchers who need to ex
     - Input your data analysis queries (e.g., `"Summarize sales data by region"`)
 
 4. Type `q` to exit the interactive session.
-
-> **Note**: Database connection parameters and API key are currently entered manually at runtime. Persistent configuration support is planned for future releases.
-
-## Using the Docker Image
-
-The Data Analyzer is available as a Docker image on GitHub Packages, allowing easy deployment in containerized environments.
-
-### Pull the Image
-
-```bash
-docker pull ghcr.io/saranshpandya/data-analyzer:0.1.0-beta
-```
-### Run the Image
-```bash
-docker run --rm -it ghcr.io/saranshpandya/data-analyzer:0.1.0-beta
-```
-> ***Note**: Support for more models, including local models, is planned.

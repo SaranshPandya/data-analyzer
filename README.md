@@ -55,4 +55,14 @@ This tool is ideal for developers, data analysts, and researchers who need to ex
 
 4. Type `q` to exit the interactive session.
 
-> ***Note**: Support for more models, including local models, is planned.
+### Build a Docker Image
+```bash
+docker build -t data-analyzer:latest .
+```
+
+### Run the Docker Image
+```bash
+docker run -it data-analyzer:latest
+```
+
+> ***Note**: Adding support for more models, including local ones, is definitely on the roadmap.

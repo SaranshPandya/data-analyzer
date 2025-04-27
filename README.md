@@ -54,3 +54,5 @@ This tool is ideal for developers, data analysts, and researchers who need to ex
     - Input your data analysis queries (e.g., `"Summarize sales data by region"`)
 
 4. Type `q` to exit the interactive session.
+
+> ***Note**: Support for more models, including local models, is planned.

@@ -29,7 +29,7 @@ This tool is ideal for developers, data analysts, and researchers who need to ex
 
 2. Install dependencies using Poetry:
     ```bash
-    poetry install
+    poetry install --no-root
     ```
 
 3. Ensure you have:

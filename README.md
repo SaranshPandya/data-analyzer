@@ -38,22 +38,19 @@ This tool is ideal for developers, data analysts, and researchers who need to ex
 
 ## Usage
 
-1. Activate the Poetry virtual environment:
+
+
+1. Run the main script:
     ```bash
-    poetry shell
+    poetry run python src/main.py
     ```
 
-2. Run the main script:
-    ```bash
-    python src/main.py
-    ```
-
-3. Follow the prompts to:
+2. Follow the prompts to:
     - Enter your PostgreSQL database parameters (e.g., user, host, database name, port, password)
     - Enter your Gemini API key
     - Input your data analysis queries (e.g., `"Summarize sales data by region"`)
 
-4. Type `q` to exit the interactive session.
+3. Type `q` to exit the interactive session.
 
 ### Build a Docker Image
 ```bash
